@@ -1,7 +1,7 @@
 include:
   - nginx
 
-{% set root = "/var/www" %}
+{% set root = "/srv/www" %}
 {% if grains['os_family'] == 'Debian' %}
   {% set sites_enabled = "/etc/nginx/sites-enabled" %}
 {% elif grains['os_family'] == 'RedHat' %}
@@ -12,7 +12,6 @@ vagrant:
   file.directory:
     - names:
       - {{ root }}/log
-      - {{ root }}/public
     - user: {{ pillar['user'] }}
     - group: {{ pillar['user'] }}
     - makedirs: True
