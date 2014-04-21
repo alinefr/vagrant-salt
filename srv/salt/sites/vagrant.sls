@@ -14,6 +14,7 @@ vagrant:
     - user: {{ pillar['user'] }}
     - group: {{ pillar['user'] }}
     - makedirs: True
+    - unless: test -d {{ pillar['root'] }}/log
 
 vagrant-nginx-available:
   file.managed:

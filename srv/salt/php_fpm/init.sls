@@ -46,7 +46,6 @@ php_stack:
       - pkg: php{{ v }}-mcrypt
       - pkg: php{{ v }}-cli
       - pkg: php{{ pecl }}-apc
-      - php: php{{ v }}-json
       {% if grains['os_family'] == 'Debian' %}
       - pkg: php5-curl
       {% elif grains['os_family'] == 'RedHat' %}
