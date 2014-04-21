@@ -1,6 +1,8 @@
 base:
   '*':
-    - node
+    - base
+    - mysql
     - nginx
     - php_fpm
     - sites.vagrant
+    - wordpress

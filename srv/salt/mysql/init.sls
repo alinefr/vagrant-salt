@@ -52,7 +52,7 @@ dbconfig:
       - mysql_user: dbconfig
 
   mysql_grants.present:
-    - grant: select,insert,update,delete
+    - grant: all privileges
     - database: wordpress.*
     - user: wpuser
     - require:

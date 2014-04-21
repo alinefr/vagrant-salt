@@ -1,7 +1,7 @@
 include:
   - nginx
 
-{% set root = "/srv/www" %}
+{% set root = "/srv/www/wordpress" %}
 {% if grains['os_family'] == 'Debian' %}
   {% set sites_enabled = "/etc/nginx/sites-enabled" %}
 {% elif grains['os_family'] == 'RedHat' %}

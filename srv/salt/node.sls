@@ -1,5 +1,0 @@
-
-coffeescript:
-  pkg.installed
-
-

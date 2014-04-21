@@ -41,11 +41,12 @@ php_stack:
     - require:
       - pkg: php{{ v }}-fpm
       - pkg: php{{ v }}-gd
-      - pkg: php{{ v }}-pgsql
+      - pkg: php{{ v }}-mysql
       - pkg: php{{ v }}{{ pecl }}-memcache
       - pkg: php{{ v }}-mcrypt
       - pkg: php{{ v }}-cli
       - pkg: php{{ pecl }}-apc
+      - php: php{{ v }}-json
       {% if grains['os_family'] == 'Debian' %}
       - pkg: php5-curl
       {% elif grains['os_family'] == 'RedHat' %}
@@ -56,7 +57,6 @@ php_stack:
       - file: {{ root }}/php-fpm.conf
       - file: {{ fpm }}/www.conf
       - file: {{ apc }}/apc.ini
-      - file: {{ apc }}/pdo_pgsql.ini
       - file: {{ root }}/php.ini
 
 php_fpm:
@@ -77,9 +77,9 @@ php_gd:
   pkg.installed:
     - name: php{{ v }}-gd
 
-php_pgsql:
+php_mysql:
   pkg.installed:
-    - name: php{{ v }}-pgsql
+    - name: php{{ v }}-mysql
 
 php_memcache:
   pkg.installed:
@@ -109,6 +109,10 @@ php_apc:
     - name: php-pecl-apc
     {% endif %}
 
+php_json:
+  pkg.installed:
+    - name: php{{ v }}-json
+
 # Configuration files for php5-fpm
 {{ root }}/php-fpm.conf:
   file.managed:
@@ -132,16 +136,6 @@ php_apc:
     - mode: 644
     - require:
       - pkg: php{{ v }}-fpm 
-
-{{ apc }}/pdo_pgsql.ini:
-  file.managed:
-    - source: salt://php_fpm/pdo_pgsql.ini
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 644
-    - require:
-      - pkg: php{{ v }}-pgsql
 
 {{ apc }}/apc.ini:
   file.managed:
