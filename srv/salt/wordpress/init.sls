@@ -18,12 +18,6 @@
 #   - user: wordpress
 #   - host: '%'
 
-# This downloads wordpress from official site and untar's to our sync folder
-get_wordpress:
- cmd.run:
-  - name: 'wget http://wordpress.org/latest.tar.gz && tar xzf latest.tar.gz'
-  - cwd: /srv/www/
-
 # This downloads and installs WP-Cli which is needed for the following steps
 get_wp-cli:
  cmd.run:
@@ -37,10 +31,17 @@ get_wp-cli:
   - symlink
   - target: /home/vagrant/.wp-cli/bin/wp
 
+# This downloads wordpress from official site and untar's to our sync folder
+get_wordpress:
+  cmd.run:
+    - name: /usr/local/bin/wp core download --path={{ pillar['root'] }}
+    - user: {{ pillar['user'] }}
+    - unless: test -d {{ pillar['root'] }}/wp-includes
+
 # This command tells wp-cli to create our wp-config.php, DB info needs to be the same as above
 config_wordpress:
  cmd.run:
-  - cwd: /srv/www/wordpress/
+  - cwd: {{ pillar['root'] }}
   - name:  (echo "\$this_domain = \$_SERVER['HTTP_HOST'];"; echo "define('WP_HOME',\"http://{\$this_domain}\");"; echo "define('WP_SITEURL',\"http://{\$this_domain}\");") | wp core config --dbname=wordpress --dbuser=wpuser --dbpass=wpuser --extra-php 
   - user: {{ pillar['user'] }}
 
@@ -48,6 +49,8 @@ config_wordpress:
 # Private IP in the Vagrantfile 
 install_wordpress:
  cmd.run:
-  - cwd: /srv/www/wordpress/
+  - cwd: {{ pillar['root'] }}
   - name: '/usr/local/bin/wp core install --url=http://localhost --title=development --admin_user=admin --admin_password=password --admin_email=aline@alinefreitas.com.br' 
   - user: {{ pillar['user'] }}
+  - unless: '/usr/local/bin/wp core is-installed'
+

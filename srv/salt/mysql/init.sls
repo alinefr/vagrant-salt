@@ -9,7 +9,7 @@ mysql-server:
 set-mysql-root-password:
   cmd.run:
     - name: 'echo "update user set password=PASSWORD(''{{salt['pw_safe.get']('mysql.root')}}'') where User=''root'';flush privileges;" | /usr/bin/env HOME=/ mysql -uroot mysql'
-    - onlyif: '/usr/bin/env HOME=/ mysql -u root'
+    - onlyif: '/usr/bin/env HOME=/ mysqlshow -u root'
     - require:
       - service: mysql-server
 

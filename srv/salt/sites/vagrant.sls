@@ -1,7 +1,6 @@
 include:
   - nginx
 
-{% set root = "/srv/www/wordpress" %}
 {% if grains['os_family'] == 'Debian' %}
   {% set sites_enabled = "/etc/nginx/sites-enabled" %}
 {% elif grains['os_family'] == 'RedHat' %}
@@ -11,7 +10,7 @@ include:
 vagrant:
   file.directory:
     - names:
-      - {{ root }}/log
+      - {{ pillar['root'] }}/log
     - user: {{ pillar['user'] }}
     - group: {{ pillar['user'] }}
     - makedirs: True
