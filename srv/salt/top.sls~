@@ -1,5 +1,0 @@
-base:
-  '*':
-    - node
-    - nginx
-    - sites.vagrant
