@@ -34,10 +34,10 @@ get_wp-cli:
   - require: 
     - cmd: get_wp-cli
 
-/usr/local/bin/br_latest_release.php:
+/usr/local/bin/latest_release.php:
   file.managed:
     - source:
-      - salt://wordpress/br_latest_release.php
+      - salt://wordpress/latest_release.php
       - user: root
       - group: root
       - mode: 755
@@ -46,7 +46,7 @@ get_wp-cli:
 # This downloads wordpress from official site and untar's to our sync folder
 get_wordpress:
   cmd.run:
-    - name: /usr/local/bin/wp core download --path={{ pillar['root'] }} --version=`php /usr/local/bin/br_latest_release.php` --locale=pt_BR
+    - name: /usr/local/bin/wp core download --path={{ pillar['root'] }} --version=`php /usr/local/bin/latest_release.php pt_BR` --locale=pt_BR
     - user: {{ pillar['user'] }}
     - unless: test -d {{ pillar['root'] }}/wp-includes
     - require: 
