@@ -41,16 +41,18 @@ if($locale == "pt_BR"){
     $content = curl_exec($intpage);
     curl_close($intpage);
 
+    // We need this to avoid PHP warnings because unincoded html.
     libxml_use_internal_errors(true);
     $inthtml = new DOMDocument();
     $inthtml->loadHTML($content);
 
     $xpath = new DOMXPath($inthtml);
 
-    $inttags = $xpath->query('//div[@class="col-sm-6"]');
-    foreach($inttags as $inttag){
-        $localetext = $inttag->nodeValue;
-        foreach($inttag->childNodes as $item){
+    // Loops to get in each locale their respective URL.
+    $intertags = $xpath->query('//div[@class="col-sm-6"]');
+    foreach($intertags as $intertag){
+        $localetext = $intertag->nodeValue;
+        foreach($intertag->childNodes as $item){
             $localeurl = $item->getAttribute('href');
             if (!empty($localeurl)){
                 if(preg_match("~\b" . $locale . "\b~",$localetext)){
@@ -61,11 +63,13 @@ if($locale == "pt_BR"){
     }
 }
 
+// And if its wrong or if we cannot find the locale, leave from here.
 if(empty($url)){
     error_log("Could not find url for " . $locale);
     return False;
 }
 
+// We run curl again, but now to get the version.
 $page = curl_init($url . "/latest/");
 curl_setopt($page, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($page, CURLOPT_FOLLOWLOCATION, true);
@@ -79,6 +83,7 @@ $html->loadHTML($content);
 
 $xpath = new DOMXPath($html);
 
+// In this loop we get the version from the URL in html div array.
 $tags = $xpath->query('//div[@class="sidebar"]/p[@class="download-tar"]/a[@href]');
 foreach($tags as $tag){
     $country_url = $tag->getAttribute('href');
