@@ -66,7 +66,7 @@ if(empty($url)){
 
 $page = curl_init($url . "/latest/");
 curl_setopt($page, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($page, CURLOPT_BINARYTRANSFER, true);
+curl_setopt($page, CURLOPT_FOLLOWLOCATION, true);
 
 $content = curl_exec($page);
 curl_close($page);
