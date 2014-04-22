@@ -2,7 +2,9 @@
 /* Copyright 2014, Aline Freitas <aline@alinefreitas.com.br>
  * 
  * This script uses a international locale code as stdin and 
- * returns latest version number for the especified locale.
+ * returns latest Wordpress version number release for the 
+ * especified locale.
+ * 
  * Unfortunately wpcentral.io/internacionalization gives the 
  * wrong page for Brazilian Portuguese locale (pt_BR), so we provide
  * the right page hardcoded here.
